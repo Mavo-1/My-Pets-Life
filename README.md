@@ -15,10 +15,10 @@ Welcome to the My Pets Life App! This application helps users keep track of thei
 To get started with the My Pets Life App, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Install dependencies for both frontend and backend:
+2. Install dependencies for both client and server:
    ```bash
    npm install
-   cd backend
+   cd server
    npm install
 
 
@@ -43,8 +43,8 @@ npm start will launch both the backend and frontend servers concurrently thanks 
 
 ## Folder Structure
 
-- **FrontEnd:** All files are on the root directory
-- **'backend':** Contains backend files including models,routes,controllers,and middleware.
+- **client:** Contains frontend files 
+- **'server':** Contains backend files including models,routes,controllers,and middleware.
 
 ## Contributing 
 Contributions are welcome! Feel free to open issues or submit pull requests to contribute to this project.
