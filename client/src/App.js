@@ -1,7 +1,8 @@
 import React, {useEffect, useState } from 'react';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/LandingPage'
 
 function App ( ){
+  // eslint-disable-next-line
   const [backendData,setBackendData] = useState([{}])
 
   useEffect(() => {

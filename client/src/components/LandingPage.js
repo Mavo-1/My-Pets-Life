@@ -1,21 +1,21 @@
 import React from 'react';
 import '../styles/LandingPage.css';
 
-function LandingPage( ) {
+function LandingPage() {
     return (
-        <body className="bg-gray-100">
+        <div className="bg-gray-100">
 
             <header>
                 <nav id="navi" className="py-4 no-underline">
                     <div className="container mx-auto flex items-center justify-between">
                         <div className="flex items-center no-underline space-x-4">
                             <h4 className="font-bold">Pets<span>Life</span></h4>
-                            <a href="#" className="text-white text-base font-semibold hover:text-blue-300">Features</a>
-                            <a href="#" className="text-white text-base font-semibold hover:text-blue-300">About</a>
+                            <a href="" className="text-white text-base font-semibold hover:text-blue-300">Features</a>
+                            <a href="" className="text-white text-base font-semibold hover:text-blue-300">About</a>
                         </div>
                         <div className="flex items-center">
                             <span className="material-icons text-white mr-1">person</span>
-                            <a href="#" className="no-underline text-white text-base font-semibold hover:text-blue-300 ml-auto">Login</a>
+                            <a href="" className="no-underline text-white text-base font-semibold hover:text-blue-300 ml-auto">Login</a>
                         </div>
                     </div>
                 </nav>
@@ -24,32 +24,33 @@ function LandingPage( ) {
             {/* Banner */}
             
             <section id="banner" className="relative bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/pets.jpg')" }}>
-            <div className="container mx-auto px-4 md:px-24 lg:px-8">
-                <div className="flex flex-col items-center justify-between xl:flex-row">
-                    <div className="w-full max-w-xl mb-12 xl:mb-0 xl:pr-16 xl:w-7/12">
-                        <h1 id="team-heading" className="max-w-lg mb-6 font-sans text-4xl font-bold tracking-tight sm:text-5xl sm:leading-none md:leading-tight" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>Keep track of your pet's <span className="text-green-400">daily activities.</span></h1>
-                        <p className="max-w-xl mb-4 text-base font-normal text-white md:text-xl">Spend less time worrying about your pet's needs. Record their activities and ensure they're happy and healthy.</p>
-                        <ul className="actions special pb-16">
-                            <li><a href="/signup" className="button primary">Sign Up Today</a></li>
-                            <li><a href="#about" className="button">Learn More</a></li>
-                        </ul>
-                        <h3 className="mt-4 mb-4 text-3xl font-bold text-green-300 text-left" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>Loved and Trusted by</h3>
-                        <dl className="flex -mx-8 -mt-8">
-                            <div className="flex flex-col px-8 pt-8">
-                                <dt className="order-2 text-base font-medium text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>Leagues</dt>
-                                <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>100+</dd>
-                            </div>
-                            <div className="flex flex-col px-8 pt-8">
-                                <dt className="order-2 text-base font-medium text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>Teams</dt>
-                                <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>1100+</dd>
-                            </div>
-                            <div className="flex flex-col px-8 pt-8">
-                                <dt className="order-2 text-base font-medium text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>Players</dt>
-                                <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>300+</dd>
-                            </div>
-                        </dl>
+                <div className="container mx-auto px-4 md:px-24 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+                    <div className="w-full md:w-1/2">
+                        <div className="text-left">
+                            <h1 className="max-w-lg mb-6 font-sans text-4xl font-bold tracking-tight sm:text-5xl sm:leading-none md:leading-tight">Keep track of your pet's <span className="text-green-400">daily activities.</span></h1>
+                            <p className="max-w-xl mb-4 text-base font-normal text-white md:text-xl">Spend less time worrying about your pet's needs. Record their activities and ensure they're happy and healthy.</p>
+                            <ul className="actions special pb-16">
+                                <li><a href="/signup" className="button primary">Sign Up Today</a></li>
+                                <li><a href="#about" className="button">Learn More</a></li>
+                            </ul>
+                            <h3 className="mt-4 mb-4 text-3xl font-bold text-green-300 text-left">Loved and Trusted by</h3>
+                            <dl className="flex -mx-8 -mt-8">
+                                <div className="flex flex-col px-8 pt-8">
+                                    <dt className="order-2 text-base font-medium text-white">Leagues</dt>
+                                    <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl">100+</dd>
+                                </div>
+                                <div className="flex flex-col px-8 pt-8">
+                                    <dt className="order-2 text-base font-medium text-white">Teams</dt>
+                                    <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl">1100+</dd>
+                                </div>
+                                <div className="flex flex-col px-8 pt-8">
+                                    <dt className="order-2 text-base font-medium text-white">Players</dt>
+                                    <dd className="order-1 text-2xl font-extrabold text-white sm:text-3xl">300+</dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
+                    <div className="w-full md:w-1/2 md:px-8">
                         <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
                             <h3 className="mb-1 text-xl font-semibold sm:text-center sm:mb-1 sm:text-2xl ">Create your account in seconds</h3>
                             <h4 className="mb-4 text-sm sm:text-center sm:mb-8 sm:text-lg ">Free to use. No credit card required.</h4>
@@ -62,18 +63,15 @@ function LandingPage( ) {
                                     <label htmlFor="email" className="inline-block mb-1 font-medium">Your E-mail</label>
                                     <input type="email" placeholder="Chewbarka@roof.com" required className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-blue-400 focus:outline-none focus:ring-indigo-200" id="email" name="email" value="" />
                                 </div>
-                                <div className="mt-6 mb-2 sm:mb-4" >
-                                    <button type="submit" className="inline-flex  items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-blue-700 rounded shadow-md hover:bg-blue-800 focus:shadow-outline focus:outline-none">Create your FREE team</button>
+                                <div className="mt-6 mb-2 sm:mb-4">
+                                    <button type="submit" className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-blue-700 rounded shadow-md hover:bg-blue-800 focus:shadow-outline focus:outline-none">Create your FREE team</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        
-{/* Testing */}
 
 
             {/* Main  */}
@@ -165,10 +163,10 @@ function LandingPage( ) {
             {/*  Footer  */}
             <footer id="footer">
                 <ul className="icons">
-                    <li><a href="#" className="icon brands fas fa-twitter"><span className="label">Twitter</span></a></li>
-                    <li><a href="#" className="icon brands fa-facebook-f"><span className="label">Facebook</span></a></li>
-                    <li><a href="#" className="icon brands fa-instagram"><span className="label">Instagram</span></a></li>
-                    <li><a href="#" className="icon brands fa-google-plus"><span className="label">Google+</span></a></li>
+                    <li><a href="" className="icon brands fas fa-twitter"><span className="label">Twitter</span></a></li>
+                    <li><a href="" className="icon brands fa-facebook-f"><span className="label">Facebook</span></a></li>
+                    <li><a href="" className="icon brands fa-instagram"><span className="label">Instagram</span></a></li>
+                    <li><a href="" className="icon brands fa-google-plus"><span className="label">Google+</span></a></li>
                 </ul>
                 <ul className="copyright">
                     <li>&copy; My Pets Life </li>
@@ -176,7 +174,7 @@ function LandingPage( ) {
                 </ul>
             </footer>
 
-        </body>
+        </div>
     );
 }
 
