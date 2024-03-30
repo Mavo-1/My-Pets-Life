@@ -62,7 +62,7 @@ export default function Hero() {
             color="text.secondary"
             sx={{ alignSelf: "center", width: { sm: "100%", md: "80%" } }}
           >
-            Spend less time worrying about your pet's needs. Record their activities and ensure they're happy and healthy.
+            Spend less time worrying about your pet's needs. Record their activities and ensure they're happy and healthy!
           </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}
