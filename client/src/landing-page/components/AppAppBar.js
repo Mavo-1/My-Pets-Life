@@ -13,6 +13,9 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 
+
+import { Link } from 'react-router-dom'
+
 // const logoStyle = {
 //   width: '140px',
 //   height: 'auto',
@@ -141,6 +144,7 @@ function AppAppBar({ mode, toggleColorMode }) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+              <Link to='/login'>
               <Button
                 color="primary"
                 variant="text"
@@ -151,6 +155,8 @@ function AppAppBar({ mode, toggleColorMode }) {
               >
                 Sign in
               </Button>
+              </Link>
+              <Link to="/signup">
               <Button
                 color="primary"
                 variant="contained"
@@ -161,6 +167,7 @@ function AppAppBar({ mode, toggleColorMode }) {
               >
                 Sign up
               </Button>
+              </Link>
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
               <Button

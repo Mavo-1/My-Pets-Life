@@ -1,6 +1,8 @@
 import React /*{useEffect, useState }*/ from 'react';
+import {BrowserRouter as Router,Route, Routes } from 'react-router-dom';
 import LandingPage from './landing-page/LandingPage';
-
+import SignUp from './components/SignUp';
+import Login from './components/Login'
 
 function App ( ){
   // eslint-disable-next-line
@@ -16,9 +18,16 @@ function App ( ){
   //   )
   // }, []) // so it only runs on the first load of component
   return (
-    <div>
-      <LandingPage></LandingPage>
-    </div>
+    
+    <Router>
+      <Routes>
+        <Route path='/' exact Component={LandingPage} />
+        <Route path='/login' Component={Login} />
+        <Route path='/signup' Component={SignUp} />
+      </Routes>
+    </Router>
+     
+    
   )
 }; 
 

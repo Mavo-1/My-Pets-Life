@@ -69,7 +69,7 @@ export default function Footer() {
               Newsletter
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={2}>
-              Subscribe to our newsletter for weekly updates and promotions.
+              Subscribe to our newsletter for weekly updates.
             </Typography>
             <Stack direction="row" spacing={1} useFlexGap>
               <TextField
