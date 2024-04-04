@@ -6,18 +6,7 @@ import Login from './components/Login';
 import Dashboard from './dashboard/Dashboard';
 
 function App ( ){
-  // eslint-disable-next-line
-  // const [backendData,setBackendData] = useState([{}])
-
-  // useEffect(() => {
-  //   fetch("/api").then(
-  //     response => response.json()
-  //   ).then (
-  //     data => {
-  //       setBackendData(data)
-  //     }
-  //   )
-  // }, []) // so it only runs on the first load of component
+ 
   return (
     
     <Router>
