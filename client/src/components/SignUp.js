@@ -31,13 +31,34 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+    const userData = {
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      password: formData.get('password'),
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/auth/signup',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+    if(response.ok) {
+      //Signup successful, handle success (redirect, show message, etc)
+      console.log('Signup successful')
+    }else {
+      //Signup failed, handle err
+      console.error('Signup fialed:' , response.statusText);
+    }
+  }catch(error){
+    console.error('Error occurred during signup:', error)
+  }
   };
 
   return (
