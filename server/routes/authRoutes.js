@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require ('bcrypt')
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { authToken} = require('../middleware/auth');
+// const { authToken} = require('../middleware/auth');
 
 
 //Post Signup
@@ -44,15 +44,15 @@ router.post('/signup', async (req,res) => {
 
 //Post Login
 
-router.post('/login', async (req,res) => {
+// router.post('/login', async (req,res) => {
 
-});
+// });
 
 // Example protected route
-router.get('/profile', authToken, async (req,res) => {
+// router.get('/profile', authToken, async (req,res) => {
     // Get user profile
   // req.user contains the authenticated user's information
-});
+// });
 
 
 module.exports = router;
