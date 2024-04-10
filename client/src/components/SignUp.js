@@ -40,7 +40,7 @@ export default function SignUp() {
             } else {
                 // Signup failed
                 console.error('Signup failed:', data.message);
-                // Display error message to the user
+                alert("USER ALREADY EXISTS")
             }
         } catch (error) {
             console.error('Error occurred during signup:', error);
