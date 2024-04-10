@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState }  from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -31,13 +32,39 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate(); //Hook for navigation
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+    const userData = {
+      email: formData.get('email'),
+      password: formData.get('password'),
+    };
+
+    try{
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+    
+      const data = await response.json();
+
+      if(response.ok) {
+        //Successful Login
+        console.log('Login successful:', data);
+        navigate('/dashboard');// redirects to dashboard
+      }else{
+        //Login failed
+        console.error('Login failed:', data.message);
+        //Display error message to the user
+      }
+    } catch (error) {
+      console.error('Error occurred during login:', error);
+      alert('Wrong email or password')
+    }
   };
 
   return (
