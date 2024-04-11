@@ -43,16 +43,32 @@ router.post('/signup', async (req,res) => {
 });
 
 //Post Login
+ router.post('/login', async (req,res) => {
+  try{
+    const { email, password } = req.body;
 
-// router.post('/login', async (req,res) => {
+    //Check if user exists
+    const user = await User.findOne({ email });
+    if(!user){
+      return res.status(400).json({ message: 'Invalid credentials'});
+    }
 
-// });
+    //Compares passwords
+    const isMatch = await bcrupt.compare( password, user.password);
+    if(!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials'});
+    }
 
-// Example protected route
-// router.get('/profile', authToken, async (req,res) => {
-    // Get user profile
-  // req.user contains the authenticated user's information
-// });
+    // Generate JWT token
+    const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET);
+
+    res.status(200).json({ user,token})
+  }catch(error){
+    console.error(error);
+    res.status(500).json({ message: 'Server error'});
+  }
+
+ });
 
 
 module.exports = router;

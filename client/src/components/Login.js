@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -27,7 +27,7 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
@@ -59,11 +59,11 @@ export default function SignInSide() {
       }else{
         //Login failed
         console.error('Login failed:', data.message);
-        //Display error message to the user
+        alert('Wrong email or password')
       }
     } catch (error) {
       console.error('Error occurred during login:', error);
-      alert('Wrong email or password')
+      
     }
   };
 
