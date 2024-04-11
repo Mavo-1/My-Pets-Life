@@ -4,43 +4,51 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
+import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import FlagIcon from '@mui/icons-material/Flag';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import PetsIcon from '@mui/icons-material/Pets';
+import AlarmIcon from '@mui/icons-material/Alarm';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { Link } from 'react-router-dom';
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/Dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
+    <ListItemButton component={Link} to="/Activities">
+      <ListItemIcon >
+        <DirectionsWalkIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Activities" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton  component={Link} to="/goals">
       <ListItemIcon>
-        <PeopleIcon />
+        <FlagIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Goals" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/health">
       <ListItemIcon>
-        <BarChartIcon />
+        <LocalHospitalIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="Health" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/profile">
       <ListItemIcon>
-        <LayersIcon />
+        <PetsIcon />
       </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Profile" />
+    </ListItemButton>
+    <ListItemButton component={Link} to="/reminders">
+      <ListItemIcon>
+        <AlarmIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reminders" />
     </ListItemButton>
   </React.Fragment>
 );
