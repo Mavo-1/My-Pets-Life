@@ -1,8 +1,6 @@
-import * as React from 'react';
-import {useNavigate} from 'react-router-dom'
+import React, { useState } from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from '@mui/material/Typography';
-
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -11,15 +9,14 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-// import Container from "@mui/material/Container";
-// import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { mainListItems, secondaryListItems } from "../dashboard/components/listItems";
-
-
-
+import AddPetForm from "./Profile/AddPetForm";
+import PetCard from "./Profile/PetCard";
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 const drawerWidth = 240;
 
@@ -69,20 +66,28 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme();
 
+const Profile = () => {
+  const [open, setOpen] = useState(true);
+  const [showAddPetForm, setShowAddPetForm] = useState(false);
+  const [pets, setPets] = useState([]);
 
-
-const Health = () => {
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    // Clear user session or JWT token
-    // Redirect to LandingPage
-    navigate('/');
-  };
-
-  const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleLogout = () => {
+    // Implement logout logic here
+  };
+
+  const handleAddPetClick = () => {
+    setShowAddPetForm(true);
+  };
+
+  const handleAddPetSubmit = (petData) => {
+    setPets([...pets, petData]);
+    setShowAddPetForm(false);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -90,7 +95,7 @@ const Health = () => {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: "24px", // keep right padding when drawer closed
+              pr: "24px",
             }}
           >
             <IconButton
@@ -152,11 +157,26 @@ const Health = () => {
           }}
         >
           <Toolbar />
-          
-          </Box> 
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h4" gutterBottom component="div" sx={{ color: 'primary.main' }}>
+              My Pets
+            </Typography>
+            <Button variant="contained" onClick={handleAddPetClick} sx={{ float: 'right' }}>
+              Add Pet
+            </Button>
+          </Box>
+          {showAddPetForm && <AddPetForm onSubmit={handleAddPetSubmit} />}
+          <Grid container spacing={3} sx={{ p: 3 }}>
+            {pets.map((pet, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <PetCard pet={pet} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </ThemeProvider>
   );
 };
 
-export default Health;
+export default Profile;
