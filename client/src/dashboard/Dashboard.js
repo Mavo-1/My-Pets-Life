@@ -152,7 +152,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Pet Activity Dashboard
+               Dashboard
             </Typography>
             <IconButton color="inherit" onClick={handleLogout}>
               <ExitToAppIcon />
