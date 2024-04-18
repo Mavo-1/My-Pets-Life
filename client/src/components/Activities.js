@@ -1,8 +1,8 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import {useNavigate} from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -11,33 +11,34 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-// import Container from "@mui/material/Container";
-// import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { mainListItems, secondaryListItems } from "../dashboard/components/listItems";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Title from '../dashboard/components/Title';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import {
+  mainListItems,
+  secondaryListItems,
+} from "../dashboard/components/listItems";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Title from "../dashboard/components/Title";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-// Generate Pet Activity Data
-function createData(date, activityType, duration) {
-  return { date, activityType, duration };
-}
-
-const rows = [
-  createData('2024-03-26', 'Walking', '30 mins'),
-  createData('2024-03-25', 'Playing fetch', '20 mins'),
-  createData('2024-03-24', 'Running', '15 mins'),
-  // Add more rows with real data representing the most recent pet activities
-];
-
-function preventDefault(event) {
-  event.preventDefault();
+// Function to format the date to display month, day, and time in 12-hour clock
+function formatDate(dateString) {
+  const options = {
+    month: "short",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+  return new Date(dateString).toLocaleDateString("en-US", options);
 }
 
 const drawerWidth = 240;
@@ -90,16 +91,55 @@ const defaultTheme = createTheme();
 
 export default function Activities() {
   const navigate = useNavigate();
+  const [activityType, setActivityType] = useState("");
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    fetchActivities();
+  }, []);
+
+  const fetchActivities = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/activities`
+      );
+      setActivities(response.data);
+    } catch (error) {
+      console.error("Error fetching activities:", error);
+    }
+  };
+
+  const handleAddActivity = async () => {
+    if (activityType !== "") {
+      const newActivity = {
+        date: formatDate(new Date()), // Format the current date
+        activityType,
+        duration: "30 mins", // Default duration, can be changed
+        timestamp: new Date(), // Add timestamp for the current time
+      };
+      try {
+        // Make a POST request to your backend API endpoint to save the activity data
+        const response = await axios.post("/api/activities", newActivity);
+        console.log("Activity saved:", response.data);
+        // Update the local state with the newly added activity
+        setActivities([...activities, response.data]);
+      } catch (error) {
+        console.error("Error saving activity:", error);
+      }
+    }
+  };
   const handleLogout = () => {
     // Clear user session or JWT token
     // Redirect to LandingPage
-    navigate('/');
+    navigate("/");
   };
 
   const [open, setOpen] = React.useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -169,31 +209,70 @@ export default function Activities() {
           }}
         >
           <Toolbar />
-          <React.Fragment>
-      <Title>Recent Pet Activities</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Activity Type</TableCell>
-            <TableCell align="right">Duration</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.activityType}</TableCell>
-              <TableCell align="right">{row.duration}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more activities
-      </Link>
-    </React.Fragment>
-          </Box> 
+          <Box sx={{ p: 3 }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              component="div"
+              sx={{ color: "primary.main" }}
+            >
+              Log Pet Activity
+            </Typography>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={activityType}
+                onChange={(e) => setActivityType(e.target.value)}
+                displayEmpty
+                inputProps={{ "aria-label": "Activity Type" }}
+              >
+                <MenuItem value="" disabled>
+                  Select Activity Type
+                </MenuItem>
+                <MenuItem value="Food">Food</MenuItem>
+                <MenuItem value="Treats">Treats</MenuItem>
+                <MenuItem value="Water">Water</MenuItem>
+                <MenuItem value="Walking">Walking</MenuItem>
+                <MenuItem value="Peeing">Peeing</MenuItem>
+                <MenuItem value="Poop">Poop</MenuItem>
+                <MenuItem value="Brushing">Brushing</MenuItem>
+                <MenuItem value="Grooming">Grooming</MenuItem>
+                <MenuItem value="Training">Training</MenuItem>
+                <MenuItem value="Sleep">Sleep</MenuItem>
+                <MenuItem value="Medicine">Medicine</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="contained"
+              onClick={handleAddActivity}
+              sx={{ ml: 2 }}
+            >
+              Add Activity
+            </Button>
+          </Box>
+          <Box sx={{ p: 3 }}>
+            <React.Fragment>
+              <Title>Recent Pet Activities</Title>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Activity Type</TableCell>
+                    <TableCell align="right">Duration</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {activities.map((activity, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{activity.date}</TableCell>
+                      <TableCell>{activity.activityType}</TableCell>
+                      <TableCell align="right">{activity.duration}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </React.Fragment>
+          </Box>
+        </Box>
       </Box>
     </ThemeProvider>
   );

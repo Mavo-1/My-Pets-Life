@@ -12,13 +12,13 @@ import Features from './components/Features';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
-import getLPTheme from './getLPTheme';
+
 
 
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
 
-  const LPtheme = createTheme(getLPTheme(mode));
+  
   const defaultTheme = createTheme({ palette: { mode } });
 
   const toggleColorMode = () => {
