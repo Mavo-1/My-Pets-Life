@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -99,35 +98,65 @@ export default function Activities() {
   }, []);
 
   const fetchActivities = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/auth/activities`
-      );
-      setActivities(response.data);
-    } catch (error) {
-      console.error("Error fetching activities:", error);
+   try{
+    const response = await fetch('http://localhost:5000/activities', {
+      method: 'GET',
+      credentials: 'include', //Send cookies with the request
+    
+    });
+    const data = await response.json();
+
+    if(response.ok) {
+      //successful fetch
+      console.log('Activities fetched successfully:', data);
+      setActivities(data);
+    }else{
+      //failed
+      console.error('Failed to fetch activities:', data.message);
+
     }
+   }catch (error){
+    console.error('Error fetching activities:', error);
+   }
   };
 
   const handleAddActivity = async () => {
-    if (activityType !== "") {
-      const newActivity = {
-        date: formatDate(new Date()), // Format the current date
-        activityType,
-        duration: "30 mins", // Default duration, can be changed
-        timestamp: new Date(), // Add timestamp for the current time
-      };
-      try {
-        // Make a POST request to your backend API endpoint to save the activity data
-        const response = await axios.post("/api/activities", newActivity);
-        console.log("Activity saved:", response.data);
-        // Update the local state with the newly added activity
-        setActivities([...activities, response.data]);
-      } catch (error) {
-        console.error("Error saving activity:", error);
+    if (!activityType.trim()) {
+      console.error("Activity type is required.");
+      return;
+    }
+  
+    const newActivity = {
+      activityType,
+      timestamp: new Date(),
+    };
+  
+    try {
+      const response = await fetch('http://localhost:5000/activities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Send cookies with the request for authentication
+        body: JSON.stringify(newActivity),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        // Successful activity creation
+        console.log("Activity saved:", data);
+        setActivities([...activities, {...data, timestamp: newActivity.timestamp}]);
+      } else {
+        // Activity creation failed
+        console.error("Failed to save activity:", data.message);
       }
+    } catch (error) {
+      console.error("Error saving activity:", error);
     }
   };
+  
+  
   const handleLogout = () => {
     // Clear user session or JWT token
     // Redirect to LandingPage
@@ -257,15 +286,15 @@ export default function Activities() {
                   <TableRow>
                     <TableCell>Date</TableCell>
                     <TableCell>Activity Type</TableCell>
-                    <TableCell align="right">Duration</TableCell>
+                   
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {activities.map((activity, index) => (
                     <TableRow key={index}>
-                      <TableCell>{activity.date}</TableCell>
+                      <TableCell>{formatDate(activity.timestamp)}</TableCell>
                       <TableCell>{activity.activityType}</TableCell>
-                      <TableCell align="right">{activity.duration}</TableCell>
+                      
                     </TableRow>
                   ))}
                 </TableBody>
