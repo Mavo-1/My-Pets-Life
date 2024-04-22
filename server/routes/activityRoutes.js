@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { authToken } = require('../middleware/auth');
-const Activity = require('../models/activity');
+const Activity = require('../models/Activities');
 
 // Route to add a new activity
-router.post('/activities', authToken, async (req, res) => {
+router.post('/',  async (req, res) => {
     try {
         // Create a new activity based on the request body
         const newActivity = new Activity({
@@ -19,7 +18,7 @@ router.post('/activities', authToken, async (req, res) => {
 });
 
 // Route to retrieve the list of activity types
-router.get('/activities', authToken, async (req, res) => {
+router.get('/',  async (req, res) => {
     try {
         // Retrieve all activities from the database
         const activities = await Activity.find();
