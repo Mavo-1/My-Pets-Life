@@ -98,27 +98,36 @@ export default function Activities() {
   }, []);
 
   const fetchActivities = async () => {
-   try{
-    const response = await fetch('http://localhost:5000/activities', {
-      method: 'GET',
-      credentials: 'include', //Send cookies with the request
-    
-    });
-    const data = await response.json();
-
-    if(response.ok) {
-      //successful fetch
-      console.log('Activities fetched successfully:', data);
-      setActivities(data);
-    }else{
-      //failed
-      console.error('Failed to fetch activities:', data.message);
-
+    try {
+      console.log('fetching activities');
+      const response = await fetch('http://localhost:5000/activities', {
+        method: 'GET',
+        credentials: 'include', // Send cookies with the request for authentication
+      });
+  
+      // Check if the response status is 302 (redirect) and the redirected URL is the login page
+      if (response.status === 302 && response.url.includes('/login')) {
+        // Redirect to login page or handle authentication error
+        window.location.href = response.url; // Redirect to login page
+        return; // Stop further execution of the function
+      }
+  
+      // Proceed with parsing JSON response if not redirected to login page
+      const data = await response.json();
+  
+      if (response.ok) {
+        // Successful fetch
+        console.log('Activities fetched successfully:', data);
+        setActivities(data);
+      } else {
+        // Failed fetch
+        console.error('Failed to fetch activities:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching activities:', error);
     }
-   }catch (error){
-    console.error('Error fetching activities:', error);
-   }
   };
+  
 
   const handleAddActivity = async () => {
     if (!activityType.trim()) {
@@ -132,6 +141,7 @@ export default function Activities() {
     };
   
     try {
+      console.log('adding activity')
       const response = await fetch('http://localhost:5000/activities', {
         method: 'POST',
         headers: {
@@ -146,7 +156,7 @@ export default function Activities() {
       if (response.ok) {
         // Successful activity creation
         console.log("Activity saved:", data);
-        setActivities([...activities, {...data, timestamp: newActivity.timestamp}]);
+        setActivities(prevActivities => [...prevActivities, {...data, timestamp: newActivity.timestamp}]);
       } else {
         // Activity creation failed
         console.error("Failed to save activity:", data.message);
@@ -155,12 +165,18 @@ export default function Activities() {
       console.error("Error saving activity:", error);
     }
   };
+
+
+
+
+
   
   
   const handleLogout = () => {
-    // Clear user session or JWT token
-    // Redirect to LandingPage
-    navigate("/");
+    //clear session date
+    sessionStorage.removeItem('isLoggedIn')
+  // Redirect to LandingPage
+  navigate("/");
   };
 
   const [open, setOpen] = React.useState(true);

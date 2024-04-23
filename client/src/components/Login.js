@@ -32,40 +32,53 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const navigate = useNavigate(); //Hook for navigation
+  const navigate = useNavigate(); // Hook for navigation
+
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const userData = {
-      email: formData.get('email'),
-      password: formData.get('password'),
-    };
-
-    try{
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`,{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-    
-      const data = await response.json();
-
-      if(response.ok) {
-        //Successful Login
-        console.log('Login successful:', data);
-        navigate('/dashboard');// redirects to dashboard
-      }else{
-        //Login failed
-        console.error('Login failed:', data.message);
-        alert('Wrong email or password')
-      }
-    } catch (error) {
-      console.error('Error occurred during login:', error);
-      
-    }
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const userData = {
+    email: formData.get('email'),
+    password: formData.get('password'),
   };
+
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Successful login
+      console.log('Login successful:', data);
+      // Set session data
+      sessionStorage.setItem('isLoggedIn', 'true');
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } else {
+      // Login failed
+      console.error('Login failed:', data.message);
+      if (response.status === 401) {
+        // Unauthorized (invalid credentials)
+        alert('Wrong email or password');
+      } else {
+        // Other error (server error)
+        alert('An error occurred during login');
+      }
+    }
+  } catch (error) {
+    console.error('Error occurred during login:', error);
+    alert('An error occurred during login');
+  }
+};
+
+  
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
