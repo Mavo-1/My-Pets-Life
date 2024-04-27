@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios for making HTTP requests
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import MuiAppBar from "@mui/material/AppBar";
@@ -97,86 +98,50 @@ export default function Activities() {
     fetchActivities();
   }, []);
 
+  // Fetch activities
   const fetchActivities = async () => {
     try {
-      console.log('fetching activities');
-      const response = await fetch('http://localhost:5000/activities', {
-        method: 'GET',
-        credentials: 'include', // Send cookies with the request for authentication
+      const response = await axios.get("http://localhost:5000/activities", {
+        withCredentials: true,
       });
-  
-      // Check if the response status is 302 (redirect) and the redirected URL is the login page
-      if (response.status === 302 && response.url.includes('/login')) {
-        // Redirect to login page or handle authentication error
-        window.location.href = response.url; // Redirect to login page
-        return; // Stop further execution of the function
-      }
-  
-      // Proceed with parsing JSON response if not redirected to login page
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Successful fetch
-        console.log('Activities fetched successfully:', data);
-        setActivities(data);
-      } else {
-        // Failed fetch
-        console.error('Failed to fetch activities:', data.message);
-      }
+
+      setActivities(response.data);
     } catch (error) {
-      console.error('Error fetching activities:', error);
+      console.error("Error fetching activities:", error.message);
     }
   };
-  
 
   const handleAddActivity = async () => {
     if (!activityType.trim()) {
       console.error("Activity type is required.");
       return;
     }
-  
+
     const newActivity = {
       activityType,
       timestamp: new Date(),
     };
-  
+
     try {
-      console.log('adding activity')
-      const response = await fetch('http://localhost:5000/activities', {
-        method: 'POST',
+      const response = await axios.post("http://localhost:5000/activities", newActivity, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include', // Send cookies with the request for authentication
-        body: JSON.stringify(newActivity),
+        withCredentials: true,
       });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Successful activity creation
-        console.log("Activity saved:", data);
-        setActivities(prevActivities => [...prevActivities, {...data, timestamp: newActivity.timestamp}]);
-      } else {
-        // Activity creation failed
-        console.error("Failed to save activity:", data.message);
-      }
+
+      setActivities((prevActivities) => [
+        ...prevActivities,
+        { ...response.data, timestamp: newActivity.timestamp },
+      ]);
     } catch (error) {
-      console.error("Error saving activity:", error);
+      console.error("Error saving activity:", error.message);
     }
   };
 
-
-
-
-
-  
-  
   const handleLogout = () => {
-    //clear session date
-    sessionStorage.removeItem('isLoggedIn')
-  // Redirect to LandingPage
-  navigate("/");
+    sessionStorage.removeItem("isLoggedIn");
+    navigate("/");
   };
 
   const [open, setOpen] = React.useState(true);
@@ -302,7 +267,6 @@ export default function Activities() {
                   <TableRow>
                     <TableCell>Date</TableCell>
                     <TableCell>Activity Type</TableCell>
-                   
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -310,7 +274,6 @@ export default function Activities() {
                     <TableRow key={index}>
                       <TableCell>{formatDate(activity.timestamp)}</TableCell>
                       <TableCell>{activity.activityType}</TableCell>
-                      
                     </TableRow>
                   ))}
                 </TableBody>

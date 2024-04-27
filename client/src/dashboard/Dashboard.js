@@ -112,11 +112,24 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    // Clear user session or JWT token
-    // Redirect to LandingPage
-    navigate('/');
-  };
+  const handleLogout = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`, {
+            method: 'GET', // Assuming you're using a GET request for logout, adjust if necessary
+            credentials: 'include', // Include credentials to send cookies along with the request
+        });
+        if (response.ok) {
+            localStorage.removeItem('accessToken'); // Remove the access token from local storage or any other user-related data
+            navigate('/login'); // Redirect the user to the login page
+        } else {
+            // Handle error responses from the server if necessary
+            console.error('Logout failed:', await response.json());
+        }
+    } catch (error) {
+        console.error('Error occurred during logout:', error);
+        // Handle network errors or other errors if necessary
+    }
+};
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {

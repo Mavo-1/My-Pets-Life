@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -15,7 +16,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useNavigate } from "react-router-dom";
+
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -29,33 +30,23 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const userData = {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
-
+    
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        }
-      );
-      const data = await response.json();
-
+     
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      
       if (response.ok) {
         // Signup successful
-        console.log("Signup successful:", data);
         navigate("/login");
       } else {
         // Signup failed
+        const data = await response.json();
         console.error("Signup failed:", data.message);
         alert("USER ALREADY EXISTS");
       }
