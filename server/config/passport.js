@@ -1,6 +1,7 @@
 // Import the required modules
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 // Export the Passport configuration as a function
 module.exports = function (passport) {
@@ -16,8 +17,11 @@ module.exports = function (passport) {
           return done(null, false, { message: "Incorrect email." });
         }
 
+        // Compare the provided password with the stored password hash
+        const isValidPassword = await bcrypt.compare(password, user.password);
+
         // If password is incorrect, return false with a message
-        if (!user.validPassword(password)) {
+        if (!isValidPassword) {
           return done(null, false, { message: "Incorrect password." });
         }
 
