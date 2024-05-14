@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios for making HTTP requests
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import MuiAppBar from "@mui/material/AppBar";
@@ -94,50 +93,47 @@ export default function Activities() {
   const [activityType, setActivityType] = useState("");
   const [activities, setActivities] = useState([]);
 
-  useEffect(() => {
-    fetchActivities();
-  }, []);
 
-  // Fetch activities
   const fetchActivities = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/activities", {
-        withCredentials: true,
-      });
-
-      setActivities(response.data);
+      const response = await fetch("http://localhost:5000/activities"); 
+      if (!response.ok) {
+        throw new Error(`Failed to fetch activities: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setActivities(data);
     } catch (error) {
-      console.error("Error fetching activities:", error.message);
+      console.error("Error fetching activities:", error);
     }
   };
+  
+  
 
-  const handleAddActivity = async () => {
-    if (!activityType.trim()) {
-      console.error("Activity type is required.");
-      return;
+useEffect(() => {
+  //fetch activities from the backend when the component mounts
+  fetchActivities();
+}, []);
+
+const handleAddActivity = async () => {
+  try {
+    const response = await fetch("/activities", {
+      method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ activityType})
+    });
+    if(response.ok){
+      fetchActivities(); // fetches updated activities after adding a new one
+      setActivityType(""); //Reset activity type after adding
+    }else {
+      console.error("Failed to add activity:" , response.statusText);
     }
+  }catch(error){
+    console.error(" Error adding activity:", error);
+  }
+};
 
-    const newActivity = {
-      activityType,
-      timestamp: new Date(),
-    };
-
-    try {
-      const response = await axios.post("http://localhost:5000/activities", newActivity, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-
-      setActivities((prevActivities) => [
-        ...prevActivities,
-        { ...response.data, timestamp: newActivity.timestamp },
-      ]);
-    } catch (error) {
-      console.error("Error saving activity:", error.message);
-    }
-  };
 
   const handleLogout = () => {
     sessionStorage.removeItem("isLoggedIn");
@@ -230,6 +226,7 @@ export default function Activities() {
             </Typography>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
+              id="activityType"
                 value={activityType}
                 onChange={(e) => setActivityType(e.target.value)}
                 displayEmpty

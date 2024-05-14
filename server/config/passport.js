@@ -1,11 +1,13 @@
-// Import the required modules
+// Import required modules
 const LocalStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwtSecret = "your_jwt_secret"; // Replace with your own secret key
 
-// Export the Passport configuration as a function
 module.exports = function (passport) {
-  // Configure the Local Strategy
+  // Configure the Local Strategy for login
   passport.use(
     new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
       try {
@@ -32,6 +34,33 @@ module.exports = function (passport) {
         return done(err);
       }
     })
+  );
+
+  // Configure the JWT Strategy for token-based authentication
+  passport.use(
+    new JwtStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: jwtSecret,
+      },
+      async (jwtPayload, done) => {
+        try {
+          // Find the user by ID from the JWT payload
+          const user = await User.findById(jwtPayload.sub);
+
+          // If user is not found, return false with a message
+          if (!user) {
+            return done(null, false, { message: "User not found." });
+          }
+
+          // Return the user if found
+          return done(null, user);
+        } catch (err) {
+          // If any error occurs, pass it to done callback
+          return done(err);
+        }
+      }
+    )
   );
 
   // Serialize user into the session

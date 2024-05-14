@@ -8,3 +8,4 @@ router.get('/', ensureAuth,  activityController.getActivity);
 router.post('/', ensureAuth, activityController.postActivity);
 
 module.exports = router;
+ 

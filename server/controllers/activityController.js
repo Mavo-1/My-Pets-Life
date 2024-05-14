@@ -3,28 +3,29 @@ const router = express.Router();
 const Activity = require('../models/Activities')
 
 // GET all activities
-router.getActivity= (async (req, res) => {
-    try {
-      const activities = await Activity.find().sort({ timestamp: -1 });
-      res.json(activities); // Send activities as JSON data
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
+router.getActivity = async (req, res) => {
+  try {
+    // Fetch activities for the authenticated user only
+    const activities = await Activity.find({ userId: req.user._id }).sort({ timestamp: -1 });
+    res.status(200).json(activities); // Send activities as JSON data
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
   
   // POST new activity
   router.postActivity =( async (req, res) => {
 
-
-    
-  
     try {
       const {activityType, timestamp } = req.body;
-    const newActivity = new Activity({
-      activityType,
-      timestamp,
-      userId: req.user._id, 
-    })
+      const newActivity = new Activity({
+        activityType: "someActivityType",
+        timestamp: new Date(),
+        userId: req.user._id // Assuming `req.user` contains the authenticated user's information
+      });
+      
      
       await newActivity.save();
       res.status(201).json(newActivity); // Send the newly created activity as JSON data
