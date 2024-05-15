@@ -4,7 +4,8 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwtSecret = ""; // Replace with your own secret key
+require('dotenv').config();
+const jwtSecret = process.env.JWT_SECRET; // Replace with your own secret key
 
 module.exports = function (passport) {
   // Configure the Local Strategy for login

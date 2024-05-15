@@ -2,10 +2,13 @@
 const express = require('express');
 const router = express.Router();
 const activityController = require('../controllers/activityController');
-const { ensureAuth } = require('../middleware/auth');
+const passport = require('passport')
+// const { ensureAuth } = require('../middleware/auth');
+require('dotenv').config();
+const jwtSecret = process.env.JWT_SECRET;
 
-router.get('/', ensureAuth,  activityController.getActivity);
-router.post('/', ensureAuth, activityController.postActivity);
+router.get('/', passport.authenticate('jwt', {session:false}),  activityController.getActivity);
+router.post('/', passport.authenticate('jwt', {session:false}), activityController.postActivity);
 
 module.exports = router;
  
